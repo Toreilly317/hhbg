@@ -7,7 +7,7 @@ import KEYS from "../../KEYS";
 import VideoSearchBar from "./VideoSearchBar";
 import VideoList from "./VideoList";
 import { connect } from "react-redux";
-import { setCurrentVideo } from "../VideoPlayer/VideoPlayerActions";
+import { setCurrentVideo } from "../../app/actions/videoPlayerActions";
 
 class VideoSearchDashboard extends Component {
   state = {

@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import eventReducer from "../../features/event/eventReducer";
-import stashReducer from "../../features/crates/reducer";
-import modalReducer from "../../features/modals/modalReducer";
-import currentVideoReducer from "../../features/VideoPlayer/VideoPlayerReducer";
+import eventReducer from "./eventReducer";
+import stashReducer from "./stashReducer";
+import modalReducer from "./modalReducer";
+import currentVideoReducer from "./VideoPlayerReducer";
 
 const rootReducer = combineReducers({
   events: eventReducer,

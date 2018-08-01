@@ -1,5 +1,5 @@
 import { createReducer } from "../../app/common/util/reducerUtil";
-import { SET_CURRENT_VIDEO } from "./VideoPlayerConstants";
+import { SET_CURRENT_VIDEO } from "../constants/VideoPlayerConstants";
 
 const initialState = {};
 

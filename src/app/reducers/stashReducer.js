@@ -1,5 +1,5 @@
-import { createReducer } from "../../app/common/util/reducerUtil";
-import { ADD_VIDEO_TO_STASH } from "./constants";
+import { createReducer } from "../common/util/reducerUtil";
+import { ADD_VIDEO_TO_STASH } from "../constants/StashConstants";
 
 const initialState = [];
 

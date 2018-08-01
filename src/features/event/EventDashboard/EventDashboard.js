@@ -5,7 +5,11 @@ import EventForm from "../EventForm/EventForm";
 import { connect } from "react-redux";
 import eventData from "./eventData";
 import cuid from "cuid";
-import { createEvent, updateEvent, deleteEvent } from "../eventActions";
+import {
+  createEvent,
+  updateEvent,
+  deleteEvent
+} from "../../../app/actions/eventActions";
 
 class EventDashboard extends Component {
   state = {

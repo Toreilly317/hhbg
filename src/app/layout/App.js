@@ -15,7 +15,7 @@ import UserDashboard from "../../features/user/UserDashboard/UserDashboard";
 import EventDetailedPage from "../../features/event/EventDetails/EventDetailsPage";
 import HomePage from "../../features/home/HomePage";
 import ModalManager from "../../features/modals/ModalManager";
-import CratePage from "../../features/crates/CratePage";
+import StashPage from "../../features/stash/StashPage";
 import CurrentVideoPlayer from "../../features/VideoPlayer/VideoPlayer";
 
 import CachedDataLoader from "../common/util/CachedDataLoader";
@@ -38,7 +38,7 @@ class App extends Component {
             <Route path="/profile/:id" component={UserDetailsPage} />
             <Route path="/settings" component={SettingsDashboard} />
             <Route path="/createEvent" component={EventForm} />
-            <Route path="/crates" component={CratePage} />
+            <Route path="/crates" component={StashPage} />
             <Route component={notFoundPage} />
           </Switch>
         </Container>

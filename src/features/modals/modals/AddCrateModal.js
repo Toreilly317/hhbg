@@ -1,6 +1,6 @@
 import React, { Component, Fragment as Frag } from "react";
 import { Modal, Input, Button } from "semantic-ui-react";
-import { addVideoToStash } from "../../crates/actions";
+import { addVideoToStash } from "../../../app/actions/stashActions";
 
 import { connect } from "react-redux";
 

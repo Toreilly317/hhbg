@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { addVideoToStash } from "../crates/actions";
+import { addVideoToStash } from "../../app/actions/stashActions";
 import { connect } from "react-redux";
-import StashButton from "../crates/StashButton";
+import StashButton from "../stash/StashButton";
 import YTPlayer from "./YTPlayer";
-import VideoPlayerControls from "./VidepPlayerControls";
+import VideoPlayerControls from "./VideoPlayerControls";
 
 //components
 import { VideoPlayerButtonGroup, VideoPlayerContainer } from "./components";

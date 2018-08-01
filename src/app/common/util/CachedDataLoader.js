@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { setCurrentVideo } from "../../../features/VideoPlayer/VideoPlayerActions";
+import { setCurrentVideo } from "../../actions/videoPlayerActions";
 
 class CachedDataLoader extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "semantic-ui-react";
-import { closeModal } from "./actions";
+import { closeModal } from "../../app/actions/modalActions";
 import { connect } from "react-redux";
 
 const actions = {

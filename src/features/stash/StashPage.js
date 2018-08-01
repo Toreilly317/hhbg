@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Grid } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { addVideoToStash } from "./actions";
+import { addVideoToStash } from "../../app/actions/stashActions";
 import CrateList from "./CrateList";
 import VideoList from "../VideoSearch/VideoList";
 
