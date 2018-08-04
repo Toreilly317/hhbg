@@ -1,23 +1,43 @@
-import React, { Fragment } from "react";
+import React, { Component, Fragment } from "react";
 import styled from "styled-components";
-import PlayPauseButton from "./PlayPauseButton";
-import SampleForm from "./SampleForm";
+import { connect } from "react-redux";
 
 const VideoControlsWrapper = styled.div`
   display: flex;
 `;
 
-export default ({ player }) => {
-  return (
-    <VideoControlsWrapper>
-      <Fragment>
-        <button onClick={() => player.seek(15)}>FF 15sec</button>
-        <button onClick={() => player.play()}>Play</button>
-        <button onClick={() => player.pause()}>Pause</button>
-        <button onClick={() => player.seek(-15)}>RW 15sec</button>
-      </Fragment>
+class VideoPlayerControls extends Component {
+  state = {
+    player: this.props.player
+  };
 
-      <SampleForm currentTime={player.videoTimeInSeconds()} />
-    </VideoControlsWrapper>
-  );
-};
+  componentDidUpdate(nextProps) {
+    nextProps !== this.props &&
+      this.setState({
+        player: this.props.plater
+      });
+  }
+
+  render() {
+    const YTPlayer = this.props.player.interface;
+    return (
+      <Fragment>
+        <VideoControlsWrapper>
+          <button onClick={() => YTPlayer.seek(-15)}>{"<<"} 15</button>
+          <button onClick={() => YTPlayer.play()}> Play </button>
+          <button onClick={() => YTPlayer.pause()}> Pause </button>
+          <button onClick={() => YTPlayer.seek(15)}>> 15</button>
+        </VideoControlsWrapper>
+      </Fragment>
+    );
+  }
+}
+
+const mapState = state => ({
+  player: state.player
+});
+
+export default connect(
+  mapState,
+  null
+)(VideoPlayerControls);

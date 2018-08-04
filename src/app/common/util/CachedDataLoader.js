@@ -8,17 +8,12 @@ class CachedDataLoader extends Component {
     super(props);
     this.loadCachedData("currentVideo", this.props.setCurrentVideo);
   }
-  // componentDidMount() {
-  //   this.loadCachedData("currentVideo", this.props.setCurrentVideo);
-  // }
 
   loadCachedData = (localName, Fn) => {
-    new Promise((resolve, reject) => {
-      if (localStorage[localName] !== undefined) {
-        const value = JSON.parse(localStorage.getItem(localName));
-        Fn(value);
-      }
-    });
+    if (localStorage[localName] !== "undefined") {
+      const value = JSON.parse(localStorage.getItem(localName));
+      Fn(value);
+    }
   };
 
   render() {

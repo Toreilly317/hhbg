@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
+import { addVideoToStash } from "../../app/actions/stashActions";
+
+const NameTrackWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 40px auto;
+  grid-template-rows: 40px 4px;
+`;
 
 class SampleForm extends Component {
   state = {
-    startTime: this.props.currentTime,
-    endTime: null
+    startTime: 0,
+    endTime: null,
+    sampleName: ""
   };
 
   handleMark = () => {
@@ -24,14 +32,27 @@ class SampleForm extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    console.log(e.target.sampleName.value);
-    e.target.sampleName.value = null;
+    const sampleData = this.state;
+    const video = this.props.video;
+    let { samples } = video;
+    if (!samples) {
+      //if no samples then song is not stashed
+      //save video with sample data to stash
+      video.samples = [sampleData];
+      this.props.addVideoToStash(video);
+    } else {
+      video.samples = [...samples, sampleData];
+    }
+
+    console.log(video, video.samples);
+  };
+
+  handleInputChange = e => {
+    const { name, value } = e.target;
     this.setState({
       ...this.state,
-      startTime: 0,
-      endTime: 0
+      [name]: value
     });
-    console.log(this.state);
   };
 
   render() {
@@ -40,14 +61,17 @@ class SampleForm extends Component {
         <button onClick={this.handleMark}>Mark</button>
         <button onClick={this.handleEndMark}>End Mark</button>
         <div>
-          <div>Current Time: {this.props.currentTime.toFixed(2)}</div>
-          <div>Marked Time: {this.state.startTime}</div>
-          <div>End Mark Time: {this.state.endTime}</div>
+          <div>Current Time: </div>
+          <div>Marked Time: </div>
+          <div>End Mark Time: </div>
           {this.state.endTime && (
             <form onSubmit={this.handleOnSubmit}>
+              <NameTrackWrapper />
               <input
+                onChange={this.handleInputChange}
                 name="sampleName"
                 type="text"
+                value={this.state.sampleName}
                 placeholder="Name This Sample"
               />
             </form>
@@ -58,4 +82,15 @@ class SampleForm extends Component {
   }
 }
 
-export default SampleForm;
+const mapState = state => ({
+  currentVideo: state.currentVideo
+});
+
+const actions = {
+  addVideoToStash
+};
+
+export default connect(
+  mapState,
+  actions
+)(SampleForm);

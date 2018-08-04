@@ -1,120 +1,84 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+import { addPlayer } from "../../app/actions/YTPlayerActions";
 import { connect } from "react-redux";
 
-class YTPlayer extends Component {
+class VideoWidget extends Component {
   state = {
     currentTime: 0,
     player: {}
   };
 
   componentDidMount = () => {
-    this.appendYoutubePlayerAPIScript();
-    this.onAPIReady();
-  };
-
-  controls = {
-    pause: () => this.player.pauseVideo(),
-    play: () => this.player.playVideo(),
-    seek: s => this.player.seekTo(s),
-    videoTimeInSeconds: () => this.state.currentTime,
-    getDuration: () => this.player.getDuration()
-  };
-
-  startTrackingTime = () => {
-    if (!this.videoTime) {
-      setInterval(() => {
-        this.setState({ currentTime: this.player.getCurrentTime() });
-      }, 1000);
-    }
-  };
-
-  stopTrackingTime = () => {
-    clearInterval(this.videoTime);
+    const { videoId } = this.props;
+    this.loadYoutubeAPIScript();
+    window.onYouTubeIframeAPIReady = () => this.buildPlayer(videoId);
   };
 
   componentDidUpdate = nextProps => {
-    if (nextProps.video === this.props.video) return false;
-    this.player.loadVideoById({
-      videoId: this.props.video.id.videoId,
-      // this will be used for sample loading
-      // startSeconds: 5,
-      // endSeconds: 60,
-      suggestedQuality: "small"
-    });
-    this.player.playVideo();
+    if (nextProps.videoId !== this.props.videoId) {
+      this.state.player.loadVideoById(this.props.videoId);
+      this.state.player.playVideo();
+    }
   };
 
-  appendYoutubePlayerAPIScript = () => {
-    var tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  loadYoutubeAPIScript = () => {
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    const YT_API_URL = "https://www.youtube.com/iframe_api";
+
+    // youtube api script exist ? return : append
+    if (firstScriptTag.src !== YT_API_URL) {
+      const tag = document.createElement("script");
+      tag.src = YT_API_URL;
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    } else {
+      return;
+    }
   };
 
-  onAPIReady = () => {
-    const that = this;
-
-    window["onYouTubeIframeAPIReady"] = e => {
-      that.player = new window["YT"].Player("player", {
-        videoId: this.props.video.id.videoId,
-        height: "200",
-        width: "200",
+  buildPlayer = videoId => {
+    const player = new window.YT.Player("player", {
+      height: "200",
+      width: "200",
+      videoId: this.props.videoId,
+      playerVars: {
+        height: 200,
+        width: 200,
         controls: 0,
+        showinfo: 0,
+        wmode: "transparent"
+      }
+      // events: {
+      //   onReady: this.onPlayerReady,
+      //   onStateChange: this.onPlayerStateChange
+      // }
+    });
 
-        rel: 0,
-        modestbranding: 1,
-        events: {
-          onStateChange: this.onPlayerStateChange,
-          onError: this.onPlayerError,
-          onReady: e => console.log("ready")
-        }
-      });
+    player.interface = {
+      play: () => this.state.player.playVideo(),
+      pause: () => this.state.player.pauseVideo(),
+      seek: s =>
+        this.state.player.seekTo(this.state.player.getCurrentTime() + s),
+      currentTime: () => this.state.player.getCurrentTime()
     };
+
+    //add new created player to player array with ID to be ref'd later
+    this.setState({
+      ...this.state,
+      player
+    });
   };
 
   render() {
-    return this.props.render(this.controls);
+    this.props.addPlayer(this.state.player);
+    return <div id="player" />;
   }
-
-  onPlayerStateChange = event => {
-    switch (event.data) {
-      case window["YT"].PlayerState.PLAYING:
-        this.startTrackingTime();
-        break;
-      case window["YT"].PlayerState.PAUSED:
-        console.log("paused");
-        break;
-      case window["YT"].PlayerState.ENDED:
-        console.log("ended ");
-        break;
-      default:
-        break;
-    }
-  };
-  //utility
-  cleanTime = () => {
-    return Math.round(this.player.getCurrentTime());
-  };
-  onPlayerError = event => {
-    switch (event.data) {
-      case 2:
-        console.log("" + this.video);
-        break;
-      case 100:
-        break;
-      case 101 || 150:
-        break;
-      default:
-        break;
-    }
-  };
 }
 
-const mapState = state => ({
-  video: state.currentVideo
-});
+const actions = {
+  addPlayer
+};
 
 export default connect(
-  mapState,
-  null
-)(YTPlayer);
+  null,
+  actions
+)(VideoWidget);

@@ -1,47 +1,28 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { addVideoToStash } from "../../app/actions/stashActions";
 import { connect } from "react-redux";
-import StashButton from "../stash/StashButton";
+
 import YTPlayer from "./YTPlayer";
 import VideoPlayerControls from "./VideoPlayerControls";
+import SampleForm from "../SampleForm/SampleForm";
 
 //components
-import { VideoPlayerButtonGroup, VideoPlayerContainer } from "./components";
+import { PlayerContainer, VideoContainer } from "./components";
 
 class VideoPlayer extends Component {
-  checkIfStashed = () => {
-    const { videos: stash } = this.props.crates[0];
-    if (stash.length > 0) {
-      const isStashed = video => video.id === this.props.videoID;
-      this.setState({
-        videoIsStash: stash.some(isStashed)
-      });
-    }
-  };
-
-  handleStashVideo = () => {
-    this.props.addVideoToStash(this.props.video);
-  };
-
   render() {
     return (
-      <VideoPlayerContainer>
-        {this.props.video && (
-          <YTPlayer
-            render={player => {
-              return (
-                <div>
-                  <div id="player" />
-                  <VideoPlayerControls player={player} />
-                </div>
-              );
-            }}
-          />
+      <Fragment>
+        <PlayerContainer>
+          <VideoPlayerControls />
+        </PlayerContainer>
+        {this.props.video.id && (
+          <VideoContainer>
+            <YTPlayer videoId={this.props.video.id.videoId} />
+            <SampleForm />
+          </VideoContainer>
         )}
-        <VideoPlayerButtonGroup>
-          <StashButton />
-        </VideoPlayerButtonGroup>
-      </VideoPlayerContainer>
+      </Fragment>
     );
   }
 }

@@ -6,6 +6,7 @@ const initialState = {};
 export const setCurrentVideo = (state, payload) => {
   localStorage.removeItem("currentVideo");
   localStorage.setItem("currentVideo", JSON.stringify(payload.video));
+
   return {
     ...payload.video
   };

@@ -27,36 +27,33 @@ class VideoSearchDashboard extends Component {
     }
   }
 
-  searchYoutube = () => {
+  searchYoutube = async () => {
     const ROOT_URL = "https://www.googleapis.com/youtube/v3/search";
 
     const params = {
       key: KEYS.youtube,
       q: this.state.term,
-      maxResults: 10,
+      maxResults: 20,
       type: "video",
       videoEmbeddable: true,
       part: "snippet"
     };
 
-    axios
-      .get(ROOT_URL, { params: params })
-      .then(searchResults => {
-        const { items, nextPageToken } = searchResults.data;
-        this.setState({
-          ...this.state,
-          youtubeVideos: items,
-          nextPageToken
-        });
+    const searchResults = await axios.get(ROOT_URL, { params });
+    const { items, nextPageToken } = searchResults.data;
 
-        localStorage.setItem(
-          "youtubeVideos",
-          JSON.stringify(this.state.youtubeVideos)
-        );
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    // const { items, nextPageToken } = searchResults.data;
+
+    this.setState({
+      ...this.state,
+      youtubeVideos: items,
+      nextPageToken
+    });
+
+    localStorage.setItem(
+      "youtubeVideos",
+      JSON.stringify(this.state.youtubeVideos)
+    );
   };
 
   handleSearchInputChange = e => {
