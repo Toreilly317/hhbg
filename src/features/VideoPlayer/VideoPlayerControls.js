@@ -6,38 +6,21 @@ const VideoControlsWrapper = styled.div`
   display: flex;
 `;
 
-class VideoPlayerControls extends Component {
-  state = {
-    player: this.props.player
-  };
+const VideoPlayerControls = props => {
+  const { seek, player } = props;
 
-  componentDidUpdate(nextProps) {
-    nextProps !== this.props &&
-      this.setState({
-        player: this.props.plater
-      });
-  }
+  //current time is a a Number in seconds.
 
-  render() {
-    const YTPlayer = this.props.player.interface;
-    return (
-      <Fragment>
-        <VideoControlsWrapper>
-          <button onClick={() => YTPlayer.seek(-15)}>{"<<"} 15</button>
-          <button onClick={() => YTPlayer.play()}> Play </button>
-          <button onClick={() => YTPlayer.pause()}> Pause </button>
-          <button onClick={() => YTPlayer.seek(15)}>> 15</button>
-        </VideoControlsWrapper>
-      </Fragment>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <VideoControlsWrapper>
+        <button onClick={() => seek(-15)}>{"<<"} 15</button>
+        <button onClick={() => player.playVideo()}> Play </button>
+        <button onClick={() => player.pauseVideo()}> Pause </button>
+        <button onClick={() => seek(15)}>{">>"} 15</button>
+      </VideoControlsWrapper>
+    </Fragment>
+  );
+};
 
-const mapState = state => ({
-  player: state.player
-});
-
-export default connect(
-  mapState,
-  null
-)(VideoPlayerControls);
+export default VideoPlayerControls;
