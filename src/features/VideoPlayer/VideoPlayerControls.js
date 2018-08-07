@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 const VideoControlsWrapper = styled.div`
   display: flex;
+  width: 100%;
 `;
 
 const VideoPlayerControls = props => {

@@ -17,31 +17,19 @@ export default class TimeSlider extends Component {
   handleOnChange = e => {
     const newVal = e.target.value;
     let time = Math.abs(this.props.duration - newVal - this.props.duration);
-    console.log(time);
     this.props.seek(time);
-    // if (newVal > this.state.lastValue) {
-    //   timeDiff = this.state.lastValue - newVal;
-    //   console.log("down", --timeDiff);
-    // } else {
-    //   timeDiff = newVal - this.state.lastValue;
-    //   console.log("up", timeDiff);
-    // }
-
-    // this.props.seek(timeDiff);
   };
 
   handleMouseDown = e => {
     this.props.player.pauseVideo(); //cancels currentTime timer
-    console.log("down");
+
     this.setState({
       ...this.state,
       lastValue: this.props.currentTime
     });
   };
 
-  handleMouseUp = e => {
-    this.props.player.playVideo();
-  };
+  handleMouseUp = e => {};
 
   render() {
     return (
@@ -52,13 +40,10 @@ export default class TimeSlider extends Component {
           max={this.props.duration}
           step={this.state.step}
           onChange={this.handleOnChange}
-          value={this.props.value}
+          value={this.props.currentTime}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
         />
-
-        <span>{this.props.currentTime}</span>
-        <span>{this.props.duration}</span>
       </div>
     );
   }

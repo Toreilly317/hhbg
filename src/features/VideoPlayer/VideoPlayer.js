@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import YTPlayer from "./YTPlayer";
 import VideoPlayerControls from "./VideoPlayerControls";
-import SampleForm from "../SampleForm/SampleForm";
+import SampleForm from "./SampleForm";
 import TimeSlider from "./TimeSlider";
 
 //components
@@ -27,7 +27,7 @@ class SampleWidget extends Component {
       this.buildPlayer(videoId);
     } else if (this.props.video.id.videoId !== prevProps.video.id.videoId) {
       this.state.player.loadVideoById(videoId);
-      this.getDuration();
+      this.state.player.seekTo(0);
 
       return true;
     }
@@ -48,12 +48,9 @@ class SampleWidget extends Component {
         wmode: "transparent"
       },
       events: {
-        onReady: () => {
-          this.state.player.playVideo();
-          this.getDuration();
-          this.handleTimer();
-        },
-        onPause: () => clearInterval(["timer"])
+        onStateChange: this.handlePlayerStateChange
+        // onPause: () => clearInterval(["timer"]),
+        // onPlay: () => this.getDuration()
       }
     });
 
@@ -61,6 +58,36 @@ class SampleWidget extends Component {
       ...this.state,
       player
     });
+  };
+
+  handlePlayerStateChange = e => {
+    const playerStatus = e.data;
+    const UNSTARTED = -1;
+    const ENDED = 0;
+    const PLAYING = 1;
+    const PAUSED = 2;
+    const BUFFERING = 3;
+    const CUED = 5;
+
+    switch (playerStatus) {
+      case UNSTARTED:
+        this.state.player.playVideo();
+        break;
+      case ENDED:
+        this.state.player.seekTo(0);
+        break;
+      case PLAYING: {
+        this.handleTimer();
+        this.getDuration();
+        break;
+      }
+      case PAUSED:
+        clearInterval(["timer"]);
+        break;
+
+      default:
+        break;
+    }
   };
 
   handleTimer = () => {
@@ -86,6 +113,7 @@ class SampleWidget extends Component {
     this.setState({
       currentTime: time
     });
+    this.state.player.playVideo();
   };
 
   render() {
@@ -93,8 +121,6 @@ class SampleWidget extends Component {
     return (
       <Fragment>
         <PlayerContainer>
-          <span>current Time {this.state.currentTime}</span>
-          <span>Duration {this.state.duration}</span>
           <YTPlayer />
           {this.state.player !== undefined && (
             <Fragment>
@@ -109,7 +135,10 @@ class SampleWidget extends Component {
                 currentTime={this.state.currentTime}
                 duration={this.state.duration}
               />
-              <SampleForm />
+              <SampleForm
+                video={this.props.video}
+                currentTime={this.state.currentTime}
+              />
             </Fragment>
           )}
         </PlayerContainer>
@@ -119,8 +148,7 @@ class SampleWidget extends Component {
 }
 
 const mapState = state => ({
-  video: state.currentVideo,
-  stash: state.stash
+  video: state.currentVideo
 });
 
 const actions = {

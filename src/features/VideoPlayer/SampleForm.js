@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import BPMTapButton from "./BPMTapButton";
 import styled from "styled-components";
 import { connect } from "react-redux";
 
@@ -24,14 +25,21 @@ class SampleForm extends Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    console.log(e.target.sampleName.value);
+    const sampleName = e.target.sampleName.value;
+
+    const sampleData = Object.assign(this.state, { sampleName });
+
+    //reset field
     e.target.sampleName.value = null;
+
+    //reset time in state
     this.setState({
       ...this.state,
       startTime: 0,
       endTime: 0
     });
-    console.log(this.state);
+
+    console.log(sampleData);
   };
 
   render() {
@@ -39,19 +47,40 @@ class SampleForm extends Component {
       <div>
         <button onClick={this.handleMark}>Mark</button>
         <button onClick={this.handleEndMark}>End Mark</button>
+        <BPMTapButton />
         <div>
-          <div>Current Time: {this.props.currentTime.toFixed(2)}</div>
-          <div>Marked Time: {this.state.startTime}</div>
-          <div>End Mark Time: {this.state.endTime}</div>
-          {this.state.endTime && (
-            <form onSubmit={this.handleOnSubmit}>
-              <input
-                name="sampleName"
-                type="text"
-                placeholder="Name This Sample"
-              />
-            </form>
-          )}
+          <form onSubmit={this.handleOnSubmit}>
+            <input
+              name="MarkStart"
+              type="text"
+              value={this.state.startTime}
+              placeholder="Sample Start Time"
+              autoFocus
+            />
+            <input
+              name="MarkEnd"
+              type="text"
+              value={this.state.endTime}
+              placeholder="SampleEndTime"
+              autoFocus
+            />
+            <input
+              name="sampleName"
+              type="text"
+              placeholder="Name This Sample"
+              autoFocus
+            />
+            <select name="category">
+              <option value="drums">Drums</option>
+              <option value="vocals">Vocals</option>
+              <option value="bass">Bass</option>
+              <option value="guitar">Guitar</option>
+              <option value="piano">Piano</option>
+              <option value="percussion">Percussion</option>
+            </select>
+
+            <button onClick={this.handleSubmit}>Save</button>
+          </form>
         </div>
       </div>
     );

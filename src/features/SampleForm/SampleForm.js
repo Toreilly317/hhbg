@@ -61,21 +61,20 @@ class SampleForm extends Component {
         <button onClick={this.handleMark}>Mark</button>
         <button onClick={this.handleEndMark}>End Mark</button>
         <div>
-          <div>Current Time: </div>
-          <div>Marked Time: </div>
-          <div>End Mark Time: </div>
-          {this.state.endTime && (
-            <form onSubmit={this.handleOnSubmit}>
-              <NameTrackWrapper />
-              <input
-                onChange={this.handleInputChange}
-                name="sampleName"
-                type="text"
-                value={this.state.sampleName}
-                placeholder="Name This Sample"
-              />
-            </form>
-          )}
+          <div>Current Time: {this.props.currentTime} </div>
+          <div>Marked Time: {this.state.markedTime} </div>
+          <div>End Mark Time: {this.state.endMarkTime} </div>
+
+          <form onSubmit={this.handleOnSubmit}>
+            <NameTrackWrapper />
+            <input
+              onChange={this.handleInputChange}
+              name="sampleName"
+              type="text"
+              value={this.state.sampleName}
+              placeholder="Name This Sample"
+            />
+          </form>
         </div>
       </div>
     );
