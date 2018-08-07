@@ -1,4 +1,6 @@
-class BPMTapButton extends React.Component {
+import React, { Component } from "react";
+
+class BPMTapButton extends Component {
   state = {
     count: 0,
     timeFirst: 0,
@@ -14,7 +16,6 @@ class BPMTapButton extends React.Component {
 
     //if its been 2 seconds since last click reset the counter & previous time
     if (timePrevious !== 0 && time - timePrevious > 2000) {
-      console.log("old");
       this.setState({
         count: 0,
         timePrevious: time
