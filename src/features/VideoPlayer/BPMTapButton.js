@@ -1,33 +1,39 @@
-import React, { Component } from "react";
-
-class BPMTapButton extends Component {
+class BPMTapButton extends React.Component {
   state = {
     count: 0,
-    msecsFirst: 0,
-    msecsPrevious: 0,
+    timeFirst: 0,
+    timePrevious: 0,
     bpm: 0
   };
 
+  //mouse down gives a more accurate timing
   handleMouseDown = () => {
-    const { count, msecsFirst } = this.state;
+    const { count, timeFirst, timePrevious } = this.state;
     const timeSeconds = new Date();
-    const msecs = timeSeconds.getTime();
+    const time = timeSeconds.getTime();
+
+    //if its been 2 seconds since last click reset the counter & previous time
+    if (timePrevious !== 0 && time - timePrevious > 2000) {
+      console.log("old");
+      this.setState({
+        count: 0,
+        timePrevious: time
+      });
+      return false;
+    }
 
     if (count === 0) {
       this.setState({
-        ...this.state,
-        msecsFirst: msecs,
+        timeFirst: time,
         count: count + 1
       });
     } else {
-      const bpmAvg = (60000 * count) / (msecs - msecsFirst);
+      const bpmAvg = (60000 * count) / (time - timeFirst);
       let bpm = Math.round(bpmAvg * 100) / 100;
-
       this.setState({
-        ...this.state,
         bpm,
-        msecsPrevious: msecs,
-        count: this.state.count + 1
+        count: count + 1,
+        timePrevious: time
       });
     }
   };
