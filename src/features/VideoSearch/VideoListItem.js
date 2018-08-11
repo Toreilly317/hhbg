@@ -10,14 +10,10 @@ const VideoListItem = ({ video, onSelectVideo, onDragStart }) => {
     >
       <Grid>
         <Grid.Column width={6} style={{ padding: 0 }}>
-          <Image
-            height="100px"
-            width="100px"
-            src={video.snippet.thumbnails.high.url}
-          />
+          <Image height="100px" width="100px" src={video.thumbnails.high.url} />
         </Grid.Column>
         <Grid.Column width={10}>
-          <p> {video.snippet.title}</p>
+          <p> {video.title}</p>
         </Grid.Column>
       </Grid>
     </Segment>

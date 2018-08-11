@@ -11,7 +11,7 @@ class VideoList extends Component {
             return (
               <VideoListItem
                 onSelectVideo={this.props.onSelectVideo}
-                key={video.id.videoId}
+                key={video.videoId}
                 video={video}
                 onDragStart={this.props.onDragStart}
               />

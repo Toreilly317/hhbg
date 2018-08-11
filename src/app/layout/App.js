@@ -16,7 +16,7 @@ import EventDetailedPage from "../../features/event/EventDetails/EventDetailsPag
 import HomePage from "../../features/home/HomePage";
 import ModalManager from "../../features/modals/ModalManager";
 import StashPage from "../../features/stash/StashPage";
-import VideoWidget from "../../features/VideoPlayer/VideoPlayer";
+import SampleWidget from "../../features/SampleWidget/SampleWidget";
 
 const notFoundPage = () => <h1>So uhhh....howd you get here?</h1>;
 
@@ -40,7 +40,7 @@ class App extends Component {
             <Route component={notFoundPage} />
           </Switch>
         </Container>
-        {<VideoWidget />}
+        {<SampleWidget />}
       </Frag>
     );
   }

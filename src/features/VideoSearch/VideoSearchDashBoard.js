@@ -27,6 +27,33 @@ class VideoSearchDashboard extends Component {
     }
   }
 
+  formatVideo = video => {
+    //video id of video from search results
+    console.log(video);
+
+    const formatNewVideo = video => ({
+      videoId: video.id.videoId,
+      source: "youtube",
+      samples: [],
+      thumbnails: video.snippet.thumbnails,
+      title: video.snippet.title,
+      description: video.snippet.description,
+      foundAt: Date.now()
+    });
+
+    if (this.props.stash.length === 0) {
+      return formatNewVideo(video);
+    } else {
+      this.props.stash.forEach(stashVideo => {
+        if (stashVideo.id.videoId === video.id.videoId) {
+          return stashVideo;
+        } else {
+          return formatNewVideo(video);
+        }
+      });
+    }
+  };
+
   searchYoutube = async () => {
     const ROOT_URL = "https://www.googleapis.com/youtube/v3/search";
 
@@ -39,17 +66,20 @@ class VideoSearchDashboard extends Component {
       part: "snippet"
     };
 
-    const searchResults = await axios.get(ROOT_URL, { params });
-    const { items, nextPageToken } = searchResults.data;
+    //take data object from response
+    const { data } = await axios.get(ROOT_URL, { params });
+    const { items, nextPageToken } = data;
 
-    // const { items, nextPageToken } = searchResults.data;
+    //TODO check if stashed. if stashed replace the video with the stashed one
+    const formattedVideos = items.map(item => this.formatVideo(item));
 
     this.setState({
       ...this.state,
-      youtubeVideos: items,
+      youtubeVideos: formattedVideos,
       nextPageToken
     });
 
+    //sync new found videos to local storage
     localStorage.setItem(
       "youtubeVideos",
       JSON.stringify(this.state.youtubeVideos)
@@ -90,7 +120,11 @@ const actions = {
   setCurrentVideo
 };
 
+const mapState = state => ({
+  stash: state.stash
+});
+
 export default connect(
-  null,
+  mapState,
   actions
 )(VideoSearchDashboard);
