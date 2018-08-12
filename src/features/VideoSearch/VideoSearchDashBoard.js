@@ -29,7 +29,6 @@ class VideoSearchDashboard extends Component {
 
   formatVideo = video => {
     //video id of video from search results
-    console.log(video);
 
     const formatNewVideo = video => ({
       videoId: video.id.videoId,
@@ -45,7 +44,9 @@ class VideoSearchDashboard extends Component {
       return formatNewVideo(video);
     } else {
       this.props.stash.forEach(stashVideo => {
-        if (stashVideo.id.videoId === video.id.videoId) {
+        if (stashVideo.videoId === video.id.videoId) {
+          //add stashed flag to use later
+          stashVideo.isStashed = true;
           return stashVideo;
         } else {
           return formatNewVideo(video);

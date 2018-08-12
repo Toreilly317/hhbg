@@ -48,7 +48,11 @@ class SampleForm extends Component {
     const newSamples = [...samples, sampleData];
     const vid = Object.assign(this.props.video, { samples: newSamples });
 
-    this.props.addVideoToStash(vid);
+    if (vid.stashed) {
+      this.props.saveOrUpdateVideo(vid);
+    } else {
+      this.props.addVideoToStash(vid);
+    }
 
     //reset time in state
     this.setState({

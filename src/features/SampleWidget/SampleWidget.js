@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from "react";
-import { addVideoToStash } from "../../app/actions/stashActions";
+import {
+  saveOrUpdateVideo,
+  addVideoToStash
+} from "../../app/actions/stashActions";
 import { setCurrentVideo } from "../../app/actions/videoPlayerActions";
 import { connect } from "react-redux";
 
@@ -137,6 +140,7 @@ class SampleWidget extends Component {
                 video={this.props.video}
                 currentTime={this.state.currentTime}
                 addVideoToStash={this.props.addVideoToStash}
+                saveOrUpdateVideo={this.props.saveOrUpdateVideo}
               />
             </Fragment>
           )}
@@ -151,6 +155,7 @@ const mapState = state => ({
 });
 
 const actions = {
+  saveOrUpdateVideo,
   addVideoToStash,
   setCurrentVideo
 };

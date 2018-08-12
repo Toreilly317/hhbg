@@ -1,10 +1,16 @@
 import {
   ADD_VIDEO_TO_STASH,
-  REMOVE_VIDEO_FROM_STASH
+  REMOVE_VIDEO_FROM_STASH,
+  UPDATE_VIDEO
 } from "../constants/StashConstants";
 
 export const addVideoToStash = video => ({
   type: ADD_VIDEO_TO_STASH,
+  payload: video
+});
+
+export const saveOrUpdateVideo = video => ({
+  type: UPDATE_VIDEO,
   payload: video
 });
 
