@@ -6,7 +6,9 @@ export default props => {
     <div>
       <h1>SampleList</h1>
       <div>
-        {props.samples.forEach(sample => <SampleListItem sample={sample} />)}
+        {props.samples.forEach(sample => (
+          <SampleListItem sample={sample} />
+        ))}
       </div>
     </div>
   );

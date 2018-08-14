@@ -9,7 +9,7 @@ export const addVideoToStash = video => ({
   payload: video
 });
 
-export const saveOrUpdateVideo = video => ({
+export const updateVideo = video => ({
   type: UPDATE_VIDEO,
   payload: video
 });

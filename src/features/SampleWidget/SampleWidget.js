@@ -1,17 +1,16 @@
 import React, { Component, Fragment } from "react";
-import {
-  saveOrUpdateVideo,
-  addVideoToStash
-} from "../../app/actions/stashActions";
+import { updateVideo, addVideoToStash } from "../../app/actions/stashActions";
 import { setCurrentVideo } from "../../app/actions/videoPlayerActions";
 import { connect } from "react-redux";
 
+//components
 import YTPlayer from "./YTPlayer";
 import VideoPlayerControls from "./VideoPlayerControls";
 import SampleForm from "./SampleForm/SampleForm";
 import TimeSlider from "./TimeSlider";
+import SampleList from "./SampleList/SampleList";
 
-//components
+//style-components
 import { PlayerContainer } from "./components";
 
 class SampleWidget extends Component {
@@ -140,8 +139,9 @@ class SampleWidget extends Component {
                 video={this.props.video}
                 currentTime={this.state.currentTime}
                 addVideoToStash={this.props.addVideoToStash}
-                saveOrUpdateVideo={this.props.saveOrUpdateVideo}
+                updateVideo={this.props.updateVideo}
               />
+              <SampleList samples={this.props.video.samples} />
             </Fragment>
           )}
         </PlayerContainer>
@@ -155,7 +155,7 @@ const mapState = state => ({
 });
 
 const actions = {
-  saveOrUpdateVideo,
+  updateVideo,
   addVideoToStash,
   setCurrentVideo
 };

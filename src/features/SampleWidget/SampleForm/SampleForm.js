@@ -12,9 +12,17 @@ class SampleForm extends Component {
     sampleStart: "",
     sampleEnd: "",
     bpm: "",
-    sampleName: ""
+    sampleName: "",
+    isStashed: false
   };
 
+  componentDidUpdate() {
+    if (this.props.video.isStashed) {
+      this.setState({ isStashed: true });
+    }
+  }
+
+  //mark sample start time
   handleMark = () => {
     this.setState({
       ...this.state,
@@ -23,6 +31,7 @@ class SampleForm extends Component {
     console.log(this.state);
   };
 
+  //mark sample end time
   handleEndMark = () => {
     this.setState({
       ...this.state,
@@ -30,6 +39,7 @@ class SampleForm extends Component {
     });
   };
 
+  //manual adjustment to BPM field
   handleBPMChange = bpm => {
     this.setState({
       bpm
@@ -43,15 +53,25 @@ class SampleForm extends Component {
   };
 
   handleSaveSample = e => {
-    const sampleData = this.state;
-    const samples = (this.props.video.samples = []);
-    const newSamples = [...samples, sampleData];
+    //TODO handle form validation()
+    const sampleData = {
+      sampleStart: this.state.sampleStart,
+      sampleEnd: this.state.sampleEnd,
+      bpm: this.state.bpm,
+      sampleName: this.state.sampleName
+    };
+
+    const newSamples = [...this.props.video.samples, sampleData];
     const vid = Object.assign(this.props.video, { samples: newSamples });
 
-    if (vid.stashed) {
-      this.props.saveOrUpdateVideo(vid);
-    } else {
+    //if the video is marked as being saved, just updated the video. otherwise, save the video and set the state of it being stashed to true
+    if (this.state.isStashed === false) {
       this.props.addVideoToStash(vid);
+      this.setState({
+        isStashed: true
+      });
+    } else {
+      this.props.updateVideo(vid);
     }
 
     //reset time in state
