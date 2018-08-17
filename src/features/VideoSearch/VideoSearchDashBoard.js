@@ -19,14 +19,6 @@ class VideoSearchDashboard extends Component {
     lockedVideos: []
   };
 
-  componentDidMount() {
-    if (localStorage.youtubeVideos) {
-      this.setState({
-        youtubeVideos: JSON.parse(localStorage.youtubeVideos)
-      });
-    }
-  }
-
   formatVideo = video => {
     //video id of video from search results
 
@@ -37,7 +29,8 @@ class VideoSearchDashboard extends Component {
       thumbnails: video.snippet.thumbnails,
       title: video.snippet.title,
       description: video.snippet.description,
-      foundAt: Date.now()
+      foundAt: Date.now(),
+      isStashed: false
     });
 
     if (this.props.stash.length === 0) {
