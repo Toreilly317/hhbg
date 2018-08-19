@@ -14,7 +14,6 @@ import configureStore from "./app/store/configureStore";
 //npm modules
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import CachedDataLoader from "./app/common/util/CachedDataLoader";
 
 const store = configureStore();
 const rootEl = document.getElementById("root");
@@ -23,7 +22,6 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ScrollToTop>
-        <CachedDataLoader />
         <App />
       </ScrollToTop>
     </BrowserRouter>

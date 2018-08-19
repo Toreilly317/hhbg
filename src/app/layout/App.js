@@ -18,9 +18,16 @@ import ModalManager from "../../features/modals/ModalManager";
 import StashPage from "../../features/stash/StashPage";
 import SampleWidget from "../../features/SampleWidget/SampleWidget";
 
+import { connect } from "react-redux";
+
 const notFoundPage = () => <h1>So uhhh....howd you get here?</h1>;
 
 class App extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props !== nextProps) {
+      return true;
+    }
+  }
   render() {
     return (
       <Frag>
@@ -40,10 +47,16 @@ class App extends Component {
             <Route component={notFoundPage} />
           </Switch>
         </Container>
-        {<SampleWidget />}
+        <SampleWidget />
       </Frag>
     );
   }
 }
 
-export default App;
+const mapState = state => ({
+  currentVideo: state.currentVideo
+});
+export default connect(
+  mapState,
+  null
+)(App);
