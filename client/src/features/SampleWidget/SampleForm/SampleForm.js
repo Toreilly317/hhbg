@@ -63,7 +63,7 @@ class SampleForm extends Component {
     const vid = Object.assign(this.props.video, { samples: newSamples });
 
     //if the video is marked as being saved, just updated the video. otherwise, save the video and set the state of it being stashed to true
-    if (this.state.isStashed === false) {
+    if (this.props.video.isStashed === false) {
       this.props.addVideoToStash(vid);
       this.setState({
         isStashed: true
