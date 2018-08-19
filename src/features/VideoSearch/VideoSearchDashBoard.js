@@ -7,7 +7,7 @@ import KEYS from "../../KEYS";
 import VideoSearchBar from "./VideoSearchBar";
 import VideoList from "./VideoList";
 import { connect } from "react-redux";
-import { setCurrentVideo } from "../../app/actions/videoPlayerActions";
+import { setCurrentVideo } from "../../app/actions/currentVideoActions";
 
 class VideoSearchDashboard extends Component {
   state = {
@@ -16,37 +16,21 @@ class VideoSearchDashboard extends Component {
     loading: false,
     nextPageToken: null,
     selectedVideo: null,
+
+    //keep videos in search during/after new search
     lockedVideos: []
   };
 
-  formatVideo = video => {
-    //video id of video from search results
-
-    const formatNewVideo = video => ({
-      videoId: video.id.videoId,
-      source: "youtube",
-      samples: [],
-      thumbnails: video.snippet.thumbnails,
-      title: video.snippet.title,
-      description: video.snippet.description,
-      foundAt: Date.now(),
-      isStashed: false
-    });
-
-    if (this.props.stash.length === 0) {
-      return formatNewVideo(video);
-    } else {
-      this.props.stash.forEach(stashVideo => {
-        if (stashVideo.videoId === video.id.videoId) {
-          //add stashed flag to use later
-          stashVideo.isStashed = true;
-          return stashVideo;
-        } else {
-          return formatNewVideo(video);
-        }
-      });
-    }
-  };
+  formatVideo = video => ({
+    videoId: video.id.videoId,
+    source: "youtube",
+    samples: [],
+    thumbnails: video.snippet.thumbnails,
+    title: video.snippet.title,
+    description: video.snippet.description,
+    foundAt: Date.now(),
+    isStashed: false
+  });
 
   searchYoutube = async () => {
     const ROOT_URL = "https://www.googleapis.com/youtube/v3/search";
@@ -114,11 +98,7 @@ const actions = {
   setCurrentVideo
 };
 
-const mapState = state => ({
-  stash: state.stash
-});
-
 export default connect(
-  mapState,
+  null,
   actions
 )(VideoSearchDashboard);

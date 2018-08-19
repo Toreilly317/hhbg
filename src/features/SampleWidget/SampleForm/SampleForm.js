@@ -25,7 +25,6 @@ class SampleForm extends Component {
   //mark sample start time
   handleMark = () => {
     this.setState({
-      ...this.state,
       sampleStart: this.props.currentTime
     });
     console.log(this.state);
@@ -34,7 +33,6 @@ class SampleForm extends Component {
   //mark sample end time
   handleEndMark = () => {
     this.setState({
-      ...this.state,
       sampleEnd: this.props.currentTime
     });
   };
@@ -76,7 +74,6 @@ class SampleForm extends Component {
 
     //reset time in state
     this.setState({
-      ...this.state,
       sampleStart: "",
       sampleEnd: "",
       bpm: "",

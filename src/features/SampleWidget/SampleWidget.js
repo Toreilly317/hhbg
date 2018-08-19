@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { updateVideo, addVideoToStash } from "../../app/actions/stashActions";
-import { setCurrentVideo } from "../../app/actions/videoPlayerActions";
+import { setCurrentVideo } from "../../app/actions/currentVideoActions";
 import { connect } from "react-redux";
 
 //components
@@ -18,20 +18,25 @@ class SampleWidget extends Component {
     player: undefined,
     duration: undefined,
     currentTime: undefined,
-    video: this.props.video
+    video: this.props.video,
+    isStashed: false,
+    playerReady: false
   };
+
+  componentDidMount() {
+    const videoId = this.props.video.videoId;
+  }
 
   componentDidUpdate(prevProps) {
     const videoId = this.props.video.videoId;
+    console.log(videoId);
     if (this.state.player === undefined) {
       this.buildPlayer(videoId);
-    } else if (this.props.video.videoId !== prevProps.video.videoId) {
-      this.state.player.loadVideoById(videoId);
+    } else if (this.props !== prevProps) {
+      //TODO have the start time on the video so we can load samples at a certain time later
+      this.player.loadVideoById(videoId);
       this.state.player.seekTo(0);
-
-      return true;
     }
-    return true;
   }
 
   buildPlayer = videoId => {
@@ -49,13 +54,13 @@ class SampleWidget extends Component {
       },
       events: {
         onStateChange: this.handlePlayerStateChange
+
         // onPause: () => clearInterval(["timer"]),
         // onPlay: () => this.getDuration()
       }
     });
 
     this.setState({
-      ...this.state,
       player
     });
   };
@@ -94,7 +99,6 @@ class SampleWidget extends Component {
     const timer = () =>
       setInterval(() => {
         this.setState({
-          ...this.state,
           currentTime: this.state.player.getCurrentTime()
         });
       }, 100);
@@ -122,28 +126,24 @@ class SampleWidget extends Component {
       <Fragment>
         <PlayerContainer>
           <YTPlayer />
-          {this.state.player !== undefined && (
-            <Fragment>
-              <VideoPlayerControls
-                seek={this.seekSeconds}
-                currentTime={this.state.currentTime}
-                player={player}
-              />
-              <TimeSlider
-                seek={this.seekSeconds}
-                player={player}
-                currentTime={this.state.currentTime}
-                duration={this.state.duration}
-              />
-              <SampleForm
-                video={this.props.video}
-                currentTime={this.state.currentTime}
-                addVideoToStash={this.props.addVideoToStash}
-                updateVideo={this.props.updateVideo}
-              />
-              <SampleList samples={this.props.video.samples} />
-            </Fragment>
-          )}
+
+          <Fragment>
+            <VideoPlayerControls
+              seek={this.seekSeconds}
+              currentTime={this.state.currentTime}
+              player={player}
+            />
+            <TimeSlider
+              seek={this.seekSeconds}
+              player={player}
+              currentTime={this.state.currentTime}
+              duration={this.state.duration}
+            />
+            <SampleForm
+              video={this.props.video}
+              currentTime={this.state.currentTime}
+            />
+          </Fragment>
         </PlayerContainer>
       </Fragment>
     );
