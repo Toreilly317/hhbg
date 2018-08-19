@@ -5,5 +5,19 @@
   "main": "server.js",
   "repository": "git@github.com:Toreilly317/hhbg.git",
   "author": "Toreilly317 <Taylor@TaylorOReilly.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "server": "nodemon server"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.9",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  }
 }
