@@ -28,10 +28,6 @@ app.use(passport.initialize());
 //passport Config
 require("./config/passport")(passport);
 
-app.get("/", (req, res) => {
-  res.send("hello wolrd");
-});
-
 //use routes
 app.use("/api/users", users);
 app.use("/api/profile", profile);
