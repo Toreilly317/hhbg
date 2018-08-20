@@ -9,6 +9,7 @@ const User = require("../../models/User");
 
 //input validation
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 router.get("/", (req, res) => {
   res.json({ msg: "users works" });
@@ -50,10 +51,18 @@ router.post("/register", (req, res) => {
 //@desc login user / return jwt
 //@access Public
 router.post("/login", (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   const { email, password } = req.body;
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res.status(404).json({ email: "User not found" });
+      if (!errors.email) {
+        errors.email = "No user found for this email";
+      }
+      return res.status(404).json(errors);
     }
     //check pw
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -71,7 +80,9 @@ router.post("/login", (req, res) => {
           });
         });
       } else {
-        return res.status(400).json({ password: "Password Incorrect" });
+        errors.login =
+          "Oops, there was a problem with the username or password";
+        return res.status(400).json(errors);
       }
     });
   });
